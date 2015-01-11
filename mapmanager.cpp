@@ -11,7 +11,14 @@ MapManager::~MapManager() {
 }
 
 int MapManager::open(const string& filename) {
-	return 0;
+	if (!mapFile)
+		mapFile = new MapFile();
+	else {
+		delete mapFile;
+		mapFile = new MapFile();
+	}
+
+	return mapFile->open(filename);
 }
 
 int MapManager::remove(const string& filename) {

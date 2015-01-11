@@ -3,9 +3,10 @@ using namespace std;
 
 class MapFile {
 public:
-	MapFile(const string& filename);
+	MapFile();
 	~MapFile();
 
+	int open(const string& filename);
 	int write(const string& data);
 
 private:

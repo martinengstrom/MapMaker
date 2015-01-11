@@ -18,11 +18,6 @@
 	Check for GCC or MSVS to change between sprintf_s and snprintf
 */
 
-// Perhaps we shouldnt use this and use the safe msvs functions instead
-#ifdef _MSC_VER
-#define _CRT_SECURE_NO_WARNINGS
-#endif
-
 /* Make a platform check here */
 #define WIN32_LEAN_AND_MEAN
 #define _WIN32_WINNT 0x0601
@@ -85,7 +80,7 @@ extern "C" void __stdcall RVExtension(char *output, int outputSize, const char *
 
 		/* open - opens a file or creates one if it doesnt exist */
 		if (function_ == "open") {
-			if (mapManager->open(data))
+			if (mapManager->open(data) == 0)
 				write_response(output, outputSize, "[true]");
 			else
 				write_response(output, outputSize, "[false]");

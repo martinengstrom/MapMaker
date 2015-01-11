@@ -13,5 +13,5 @@ public:
 	int close();
 
 private:
-	MapFile *mapFile;
+	MapFile *mapFile = NULL;
 };
