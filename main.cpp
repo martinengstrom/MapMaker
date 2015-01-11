@@ -36,9 +36,9 @@ extern "C" int APIENTRY DllMain(HINSTANCE hinstDLL, DWORD ul_reason_for_call, LP
 	switch (ul_reason_for_call)
 	{
 	case DLL_PROCESS_ATTACH:
-		AllocConsole();
-		freopen("CONOUT$", "w", stdout);
-		break;
+		//AllocConsole();
+		//freopen("CONOUT$", "w", stdout);
+		//break;
 	case DLL_THREAD_ATTACH:
 	case DLL_THREAD_DETACH:
 	case DLL_PROCESS_DETACH:
@@ -53,11 +53,10 @@ string not_implemented() {
 }
 
 void write_response(char *output, int outputSize, const string& data) {
-	//nprintf(output, outputSize, "%s", data);
-	sprintf_s(output, outputSize, "%s", data);
+	sprintf_s(output, outputSize-1, "%s", data.c_str());
 }
 
-extern "C" void __stdcall RVExtension(char *output, int outputSize, const char *function)
+extern "C" __declspec(dllexport) void __stdcall RVExtension(char *output, int outputSize, const char *function)
 {	
 	/* init MapManager */
 	if (!mapManager)
@@ -71,7 +70,13 @@ extern "C" void __stdcall RVExtension(char *output, int outputSize, const char *
 	}
 	/* read - reads one line (takes no arguments) */
 	else if (s_function == "read") {
-
+		string data = mapManager->read();	// reads the current line
+		write_response(output, outputSize, data);
+	}
+	/* close - closes the current opened file (takes no arguments) */
+	else if (s_function == "close") {
+		mapManager->close();
+		write_response(output, outputSize, "[true]");
 	}
 	else {
 		/* Format of function should be function name;data*/
@@ -87,15 +92,14 @@ extern "C" void __stdcall RVExtension(char *output, int outputSize, const char *
 		}
 		/* write - appends a line to the current opened file */
 		else if (function_ == "write") {
-
-		}
-		/* close - closes the current opened file */
-		else if (function_ == "close") {
-
+			if (mapManager->write(data) == 0)
+				write_response(output, outputSize, "[true]");
+			else
+				write_response(output, outputSize, "[false]");
 		}
 		/* delete - deletes a file */
 		else if (function_ == "delete") {
-
+			write_response(output, outputSize, not_implemented());
 		}
 		else {
 			/* Bad call. return an empty SQF array */

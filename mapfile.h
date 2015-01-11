@@ -7,8 +7,11 @@ public:
 	~MapFile();
 
 	int open(const string& filename);
+	void close();
 	int write(const string& data);
+	string read();
 
 private:
 	int buffer;
+	std::FILE *fp;
 };
