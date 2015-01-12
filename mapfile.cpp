@@ -8,7 +8,9 @@ MapFile::MapFile() {
 }
 
 MapFile::~MapFile() {
-
+	if (fp) {
+		fclose(fp);
+	}
 }
 
 int MapFile::open(const string& filename) {

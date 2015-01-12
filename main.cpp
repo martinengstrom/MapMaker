@@ -78,6 +78,10 @@ extern "C" __declspec(dllexport) void __stdcall RVExtension(char *output, int ou
 		mapManager->close();
 		write_response(output, outputSize, "[true]");
 	}
+	/* Report a version to ARMA so scripts can detect our presence */
+	else if (s_function == "version") {
+		write_response(output, outputSize, "0.1");
+	}
 	else {
 		/* Format of function should be function name;data*/
 		string function_ = s_function.substr(0, s_function.find(';'));
