@@ -10,7 +10,15 @@ MapManager::~MapManager() {
 	//delete queueThread;
 }
 
-int MapManager::open(const string& filename) {
+int MapManager::openRead(const string& filename) {
+	return open(false, filename);
+}
+
+int MapManager::openWrite(const string& filename) {
+	return open(true, filename);
+}
+
+int MapManager::open(bool write, const string& filename) {
 	if (!mapFile)
 		mapFile = new MapFile();
 	else {
@@ -18,7 +26,10 @@ int MapManager::open(const string& filename) {
 		mapFile = new MapFile();
 	}
 
-	return mapFile->open(filename);
+	if (write)
+		return mapFile->openWrite(filename);
+	else
+		return mapFile->openRead(filename);
 }
 
 int MapManager::remove(const string& filename) {

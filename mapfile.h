@@ -10,8 +10,11 @@ public:
 	void close();
 	int write(const string& data);
 	string read();
+	int openWrite(const string& filename);
+	int openRead(const string& filename);
 
 private:
+	int open(const string& fmode, const string& filename);
 	int buffer;
 	std::FILE *fp;
 };

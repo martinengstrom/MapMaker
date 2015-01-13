@@ -24,6 +24,7 @@
 #include <windows.h>
 #include "common.h"
 #include "mapmanager.h"
+#include "time.cpp"
 
 using namespace std;
 
@@ -80,7 +81,10 @@ extern "C" __declspec(dllexport) void __stdcall RVExtension(char *output, int ou
 	}
 	/* Report a version to ARMA so scripts can detect our presence */
 	else if (s_function == "version") {
-		write_response(output, outputSize, "0.1");
+		write_response(output, outputSize, "0.2");
+	}
+	else if (s_function == "datetime") {
+		write_response(output, outputSize, MultiPlatform::getDate());
 	}
 	else {
 		/* Format of function should be function name;data*/
@@ -88,8 +92,14 @@ extern "C" __declspec(dllexport) void __stdcall RVExtension(char *output, int ou
 		string data = s_function.substr(s_function.find(';') + 1, s_function.length());
 
 		/* open - opens a file or creates one if it doesnt exist */
-		if (function_ == "open") {
-			if (mapManager->open(data) == 0)
+		if (function_ == "openRead") {
+			if (mapManager->openRead(data) == 0)
+				write_response(output, outputSize, "[true]");
+			else
+				write_response(output, outputSize, "[false]");
+		}
+		if (function_ == "openWrite") {
+			if (mapManager->openWrite(data) == 0)
 				write_response(output, outputSize, "[true]");
 			else
 				write_response(output, outputSize, "[false]");

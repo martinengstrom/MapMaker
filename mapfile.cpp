@@ -1,5 +1,7 @@
 /*
 	TODO: use C++ ifstream instead of C fopen
+
+	implement better error checks such as if someone tries to write to a read-only file
 */
 
 #include "mapfile.h"
@@ -13,8 +15,16 @@ MapFile::~MapFile() {
 	}
 }
 
-int MapFile::open(const string& filename) {
-	fp = fopen(filename.c_str(), "a+");
+int MapFile::openRead(const string& filename) {
+	return open("r", filename);
+}
+
+int MapFile::openWrite(const string& filename) {
+	return open("w", filename);
+}
+
+int MapFile::open(const string& fmode, const string& filename) {
+	fp = fopen(filename.c_str(), fmode.c_str());
 	if (!fp)
 		return 1;
 
