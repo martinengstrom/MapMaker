@@ -1,6 +1,6 @@
 using namespace std;
 #include "common.h"
-#include "mapfile.h"
+#include "mapfile.cpp"
 
 class MapManager {
 public:
