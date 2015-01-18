@@ -14,13 +14,18 @@
 */
 
 /*
-	NOTES FOR CROSS COMPAT.
-	Check for GCC or MSVS to change between sprintf_s and snprintf
+	TO COMPILE ON LINUX WITH GCC
+	g++ -fpic -shared -m32 -o mapmaker.so main.cpp -Bstatic -l:/home/xealot/boost_stage/lib/libboost_system.a -l:/home/xealot/boost_stage/lib/libboost_date_time.a
+	replace the absolute paths with only relative ones like "libboost_system.a" if the system has static libraries installed
 
-	WHEN COMPILING WITH MINGW/GCC
-	Change sprintf_s to snprintf
-	If on windows, change RVExtension to _RVExtension
+	TO COMPILE ON WINDOWS WITH MINGW(GCC)
+	g++ -shared -o MapMaker.dll main.cpp -D_WIN32_WINNT=0x0501 -DWINVER=0x0501 "-LF:\Program Files (x86)\CodeBlocks\MinGW\lib" -lboost_system-mgw47-mt-1_55 -lboost_date_time-mgw47-mt-1_55 -lws2_32
+	replace the path to your boost libraries as needed
 */
+
+// http://stackoverflow.com/questions/6924195/get-dll-path-at-runtime
+// http://stackoverflow.com/questions/12643880/get-absolute-path-with-boostfilesystempath
+// http://stackoverflow.com/questions/1681060/library-path-when-dynamically-loaded
 
 /* Make a platform check here */
 #include <boost/predef.h>

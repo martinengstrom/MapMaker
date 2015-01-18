@@ -1,0 +1,1 @@
+g++ -m32 -o test.exe windows.cpp
